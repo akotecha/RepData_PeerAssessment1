@@ -26,7 +26,8 @@ interval: Identifier for the 5-minute interval in which measurement was taken
 The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset
 
 
-```{r, echo=TRUE}
+
+```r
 # Load data
 if (!file.exists("activity.csv") )
     {
@@ -43,40 +44,61 @@ data <- read.csv("activity.csv")
 
 Historgram of the total number of steps taken each day:
 
-```{r, echo=TRUE}
+
+```r
 steps_by_day <- aggregate(steps ~ date, data, sum)
 hist(steps_by_day$steps, main = paste("Total Steps Each Day"), col="green",xlab="Number of Steps")
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
 Mean and median steps per day:
 
-```{r, echo=TRUE}
+
+```r
 rmean <- mean(steps_by_day$steps)
 rmean
 ```
-```{r, echo=TRUE}
+
+```
+## [1] 10766.19
+```
+
+```r
 rmedian <- median(steps_by_day$steps)
 rmedian
 ```
-The mean is `r rmean` and the median is `r rmedian`
+
+```
+## [1] 10765
+```
+The mean is 1.0766189\times 10^{4} and the median is 10765
 
 ## What is the average daily activity pattern?
 
 Time Series Plot of the Average Number Steps per Day by Interval:
 
-```{r, echo=TRUE}
+
+```r
 steps_by_interval <- aggregate(steps ~ interval, data, mean)
 plot(steps_by_interval$interval,steps_by_interval$steps, type="l", xlab="Interval", ylab="Number of Steps",main="Average Number of Steps per Day by Interval")
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
 The 5-minute interval that, on average, contains the maximum number of steps:
 
-```{r, echo=TRUE}
+
+```r
 max_interval <- steps_by_interval[which.max(steps_by_interval$steps),1]
 max_interval
 ```
 
-The interval with most steps is `r max_interval`
+```
+## [1] 835
+```
+
+The interval with most steps is 835
 
 ## Imputing missing values
 
@@ -84,16 +106,22 @@ Note that there are a number of days/intervals where there are missing values (c
 
 Total number of missing values in the dataset:
 
-```{r, echo=TRUE}
+
+```r
 NATotal <- sum(!complete.cases(data))
 NATotal
 ```
 
-The total number of missing values is `r NATotal`
+```
+## [1] 2304
+```
+
+The total number of missing values is 2304
 
 We will use the mean for the day to fill in these missing values.
 
-```{r, echo=TRUE}
+
+```r
 StepsAverage <- aggregate(steps ~ interval, data = data, FUN = mean)
 fillNA <- numeric()
 for (i in 1:nrow(data)) {
@@ -108,34 +136,47 @@ for (i in 1:nrow(data)) {
 ```
 New dataset which fills in these missing values:
 
-```{r, echo=TRUE}
+
+```r
 new_activity <- data
 new_activity$steps <- fillNA
 ```
 
 Revised histogram of total steps taken each day:
 
-```{r, echo=TRUE}
+
+```r
 StepsTotalUnion <- aggregate(steps ~ date, data = new_activity, sum, na.rm = TRUE)
 hist(StepsTotalUnion$steps, main = paste("Total Steps Each Day"), col="blue", xlab="Number of Steps")
 #Create Histogram to show difference. 
 hist(steps_by_day$steps, main = paste("Total Steps Each Day"), col="green", xlab="Number of Steps", add=T)
 legend("topright", c("Imputed", "Non-imputed"), col=c("blue", "green"), lwd=10)
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 Mean:
 
-```{r, echo=TRUE}
+
+```r
 rmeantotal <- mean(StepsTotalUnion$steps)
 rmeantotal
 ```
 
+```
+## [1] 10766.19
+```
+
 Median:
 
-```{r, echo=TRUE}
+
+```r
 rmediantotal <- median(StepsTotalUnion$steps)
 rmediantotal
+```
+
+```
+## [1] 10766.19
 ```
 
 
@@ -143,26 +184,37 @@ Difference with the unadjusted dataset:
 
 Median:
 
-```{r, echo=TRUE}
+
+```r
 rmediandiff <- rmediantotal - rmedian
 rmediandiff
 ```
 
+```
+## [1] 1.188679
+```
+
 Mean:
 
-```{r, echo=TRUE}
+
+```r
 rmeandiff <- rmeantotal - rmean
 rmeandiff
 ```
 
-The mean differs by `r rmeandiff` and the median by `r rmediandiff` 
+```
+## [1] 0
+```
+
+The mean differs by 0 and the median by 1.1886792 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 Using the adjusted dataset, we can create a plot to compare the number of steps between the weekdays and the weekend.
 
-```{r, echo=TRUE}
+
+```r
 weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", 
               "Friday")
 new_activity$dow = as.factor(ifelse(is.element(weekdays(as.Date(new_activity$date)),weekdays), "Weekday", "Weekend"))
@@ -170,6 +222,8 @@ StepsTotalUnion <- aggregate(steps ~ interval + dow, new_activity, mean)
 library(lattice)
 xyplot(StepsTotalUnion$steps ~ StepsTotalUnion$interval|StepsTotalUnion$dow, main="Average Steps per Day by Interval",xlab="Interval", ylab="Steps",layout=c(1,2), type="l")
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
 
 
