@@ -50,7 +50,7 @@ steps_by_day <- aggregate(steps ~ date, data, sum)
 hist(steps_by_day$steps, main = paste("Total Steps Each Day"), col="green",xlab="Number of Steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+![](PA1_template_files/figure-html/hist_plot_1-1.png)<!-- -->
 
 Mean and median steps per day:
 
@@ -84,7 +84,7 @@ steps_by_interval <- aggregate(steps ~ interval, data, mean)
 plot(steps_by_interval$interval,steps_by_interval$steps, type="l", xlab="Interval", ylab="Number of Steps",main="Average Number of Steps per Day by Interval")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](PA1_template_files/figure-html/time_series_plot-1.png)<!-- -->
 
 The 5-minute interval that, on average, contains the maximum number of steps:
 
@@ -153,7 +153,7 @@ hist(steps_by_day$steps, main = paste("Total Steps Each Day"), col="green", xlab
 legend("topright", c("Imputed", "Non-imputed"), col=c("blue", "green"), lwd=10)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](PA1_template_files/figure-html/histo_plot_2-1.png)<!-- -->
 
 Mean:
 
@@ -223,7 +223,7 @@ library(lattice)
 xyplot(StepsTotalUnion$steps ~ StepsTotalUnion$interval|StepsTotalUnion$dow, main="Average Steps per Day by Interval",xlab="Interval", ylab="Steps",layout=c(1,2), type="l")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+![](PA1_template_files/figure-html/panel_plots-1.png)<!-- -->
 
 
 

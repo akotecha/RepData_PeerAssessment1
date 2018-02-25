@@ -43,7 +43,7 @@ data <- read.csv("activity.csv")
 
 Historgram of the total number of steps taken each day:
 
-```{r, echo=TRUE}
+```{r hist_plot_1, echo=TRUE}
 steps_by_day <- aggregate(steps ~ date, data, sum)
 hist(steps_by_day$steps, main = paste("Total Steps Each Day"), col="green",xlab="Number of Steps")
 ```
@@ -64,7 +64,7 @@ The mean is `r rmean` and the median is `r rmedian`
 
 Time Series Plot of the Average Number Steps per Day by Interval:
 
-```{r, echo=TRUE}
+```{r time_series_plot, echo=TRUE}
 steps_by_interval <- aggregate(steps ~ interval, data, mean)
 plot(steps_by_interval$interval,steps_by_interval$steps, type="l", xlab="Interval", ylab="Number of Steps",main="Average Number of Steps per Day by Interval")
 ```
@@ -115,7 +115,7 @@ new_activity$steps <- fillNA
 
 Revised histogram of total steps taken each day:
 
-```{r, echo=TRUE}
+```{r histo_plot_2, echo=TRUE}
 StepsTotalUnion <- aggregate(steps ~ date, data = new_activity, sum, na.rm = TRUE)
 hist(StepsTotalUnion$steps, main = paste("Total Steps Each Day"), col="blue", xlab="Number of Steps")
 #Create Histogram to show difference. 
@@ -162,7 +162,7 @@ The mean differs by `r rmeandiff` and the median by `r rmediandiff`
 
 Using the adjusted dataset, we can create a plot to compare the number of steps between the weekdays and the weekend.
 
-```{r, echo=TRUE}
+```{r panel_plots, echo=TRUE}
 weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", 
               "Friday")
 new_activity$dow = as.factor(ifelse(is.element(weekdays(as.Date(new_activity$date)),weekdays), "Weekday", "Weekend"))
